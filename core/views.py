@@ -49,7 +49,7 @@ def get_upcoming_trains(dashStop: dashStop):
         data = []  # Empty list in case of errors
 
     return data
-    
+
 
 # Create your views here.
 def home(request):
@@ -72,7 +72,8 @@ def get_random_image(request):
     image_paths = []
 
     for filename in os.listdir(settings.MEDIA_ROOT):
-        image_paths.append(os.path.join(settings.MEDIA_URL, filename))
+        if filename.lower().endswith(('.jpg', '.jpeg')):
+            image_paths.append(os.path.join(settings.MEDIA_URL, filename))
 
     image_url = random.choice(image_paths)
 
