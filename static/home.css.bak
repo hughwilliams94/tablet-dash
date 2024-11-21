@@ -1,0 +1,43 @@
+body {
+    font-family: 'Lato';
+    padding: 20px;
+    background-color: black;
+    height: 100vh;
+    display: flex;
+}
+.card-container {
+    display: flex;
+    max-height: 10vh;
+    flex-wrap: wrap;
+    gap: 16px;
+    justify-content: center;
+}
+.card {
+    flex: 1 1 calc(25% - 16px); /* Grow/shrink, with a base width */
+    max-width: 400px; /* Maximum width of a card */
+    color: white;
+    border-radius: 8px;
+    padding: 16px;
+    box-sizing: border-box; /* Include padding and border in the element's total width and height */
+}
+.card h2 {
+    margin: 0; /* Remove default margin */
+    overflow: hidden; /* Prevent overflow */
+    text-overflow: ellipsis; /* Show ellipsis for overflowed text */
+    white-space: nowrap; /* Prevent text from wrapping */
+}
+.card strong {
+    display: block; /* Make labels block elements */
+    margin-bottom: 4px; /* Space between label and value */
+}
+.image-container {
+    display: flex;
+    flex: 3;
+    justify-content: center;
+}
+#dynamic-image {
+    border-radius: 8px; /* Rounded edges for the image */
+    object-fit: cover; /* Maintain aspect ratio while covering area */
+    width: 100%;
+    height: 100%;
+}

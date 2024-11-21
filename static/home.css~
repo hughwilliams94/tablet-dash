@@ -1,0 +1,30 @@
+body {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+    background-color: black;
+}
+.card-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    justify-content: center;
+}
+.card {
+    flex: 1 1 calc(25% - 16px); /* Grow/shrink, with a base width */
+    max-width: 4j00px; /* Maximum width of a card */
+    color: white;
+    border-radius: 8px;
+    padding: 16px;
+    box-shadow: 5px 5px 12px rgba(0, 0, 0, 0.3);
+    box-sizing: border-box; /* Include padding and border in the element's total width and height */
+}
+.card h2 {
+    margin: 0; /* Remove default margin */
+    overflow: hidden; /* Prevent overflow */
+    text-overflow: ellipsis; /* Show ellipsis for overflowed text */
+    white-space: nowrap; /* Prevent text from wrapping */
+}
+.card strong {
+    display: block; /* Make labels block elements */
+    margin-bottom: 4px; /* Space between label and value */
+}

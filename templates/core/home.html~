@@ -1,0 +1,30 @@
+<!-- templates/core/api_page.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acton Central</title>
+</head>
+<body>
+    <h1>Next Departures</h1>
+
+    <!-- Loop through the users passed from the view -->
+    {% if trains %}
+    <ul>
+      {% for train in trains %}
+      <li>
+	<strong>Platform:</strong> {{ train.platformName }} <br>
+	<strong>Destination:</strong> {{ train.destinationName }} <br>
+	<strong>Time:</strong> {{ train.expectedArrival }} <br>
+	<hr>
+      </li>
+      {% endfor %}
+    </ul>
+    {% else %}
+        <p>No trains are available from the API.</p>
+    {% endif %}
+</body>
+</html>
+

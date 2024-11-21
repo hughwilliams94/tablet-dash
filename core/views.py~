@@ -1,0 +1,54 @@
+import requests
+
+from django.shortcuts import render
+from datetime import datetime, timezone
+from collections import namedtuple
+
+class dashStop():
+    def __init__(self, lineId, stationId, direction):
+        self.lineId = lineId
+        self.direction = direction
+        self.stationId = stationId
+
+
+def find_next_train(data):
+    current_time = datetime.now(timezone.utc)
+    nearest_item = min(data, key=lambda item: abs(current_time - datetime.fromisoformat(item['expectedArrival'])))
+    return nearest_item
+
+
+def get_upcoming_trains(dashStop: dashStop):
+    api_url = f"https://api.tfl.gov.uk/Line/{dashStop.lineId}/Arrivals/{dashStop.stationId}[{dashStop.direction}]"
+    try:
+        response = requests.get(api_url)
+
+        if response.status_code == 200:
+            arrivals = response.json()  # Assuming the response is in JSON format
+            data = find_next_train(arrivals)
+            data['expectedArrival'] = datetime.fromisoformat(data['expectedArrival']).strftime("%B %d, %Y %I:%M %p")
+        else:
+            data = []
+    except requests.exceptions.RequestException as e:
+        # For handling any kind of request exceptions
+        print(f"An error occurred while calling the API: {e}")
+        data = []  # Empty list in case of errors
+
+    return data
+    
+
+# Create your views here.
+def home(request):
+    
+    # External API URL we want to call
+    stopDict = {
+        "actonCentralRichmond": dashStop("london-overground", "910GACTNCTL", "inbound"),
+        "actonCentralStratford": dashStop("london-overground", "910GACTNCTL", "outbound"),
+        "actonCentralRichmond": dashStop("elizabeth-line", "940GACTON", "outbound")
+    }
+
+    dashStopData = []
+    for value in stopDict.values():
+        dashStopData += get_upcoming_trains(value)
+        
+    # Pass the API data to the template
+    return render(request, 'core/home.html', {'trains': dashStopData})

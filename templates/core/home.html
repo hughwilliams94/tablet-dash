@@ -1,0 +1,58 @@
+<!-- templates/core/api_page.html -->
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'home.css' %}">
+    <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <title>Acton Central</title>
+</head>
+<body>
+    {% if trains %}
+    <div class="card-container">
+      {% for train in trains %}
+      <div style="background-color: {{ train.0.colour }}" class="card">
+	<h2>Next train to {{ train.0.shortDestination }}</h2>
+	<strong>{{ train.0.platformName }}</strong>
+	<strong style="font-size: large;">{{ train.0.expectedArrivalTime }}</strong>
+	{{ train.1.expectedArrivalTime }}
+      </div>
+      {% endfor %}
+    </div>
+    {% else %}
+    <p>No trains are available from the API.</p>
+    {% endif %}
+    <div class="image-container">
+      <img id="dynamic-image" src="/media/866-536x354.jpg" alt="Dynamic Image">
+    </div>
+  <script>
+    $(document).ready(function() {
+        // Function to update the image
+        function updateImage() {
+	    $('#dynamic-image').fadeOut(500, function() {
+                $.ajax({
+		    url: '/get-image/',  // URL of the Django view
+		    method: 'GET',
+		    success: function(data) {
+			console.log(data)
+                        // Update image source with the new URL
+                        $('#dynamic-image').attr('src', data.image_url).animate();
+			$('#dynamic-image').fadeIn(500); // 500ms for fade in
+		    },
+		    error: function() {
+                        console.error('Error fetching new image.');
+		    }
+                });
+	    });
+        }
+
+        // Change image every 5 seconds (5000 milliseconds)
+        setInterval(updateImage, 30000);
+    });
+  </script>
+</body>
+</html>
+
